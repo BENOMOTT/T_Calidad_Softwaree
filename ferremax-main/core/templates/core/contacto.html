@@ -1,0 +1,105 @@
+{% extends 'core/base.html'%}
+{%block contenido%}
+{% load humanize %}
+{% load static %}
+
+<div class="container col-sm-12 col-md-8 col-lg-6">
+  <div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Sobre nosotros.
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <strong>Sobre nosotros.</strong> "En Ferremax, nos dedicamos a ofrecerte todo lo que necesitas para tus proyectos de construcción y mantenimiento. Nuestra misión es proporcionarte productos de alta calidad y compartir nuestro conocimiento para hacer tus proyectos más fáciles y seguros. Estamos comprometidos con un futuro donde la construcción sea sostenible y segura. Únete a nosotros y juntos construiremos un mundo mejor.. <code></code>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Contactos
+        </button>
+      </h2>
+      <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <strong>Correo</strong> ferremax+@ferreteria.com <br>
+          <strong>WhatsApp</strong> +569 555 444 22 <br>
+          <strong>Instagram</strong> @Ferremax_+ <br>
+          
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          Ubicacion
+        </button>
+      </h2>
+      <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <strong>Direccion:</strong> Calle falsa 123, Conchali, Santiago de Chile <code></code> 
+          <!-- Button trigger modal -->
+              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModald">
+                Ver
+              </button>
+
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModald" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog ">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title " id="exampleModalLabel">Mapa</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                          <div class="container "> 
+                            <div id='map' style='width: 500px; height: 400px;'></div>
+                            <script>
+                            mapboxgl.accessToken = 'pk.eyJ1IjoiZW50cm9waXR0IiwiYSI6ImNsamo3Y2NobzA1dmwzbW90bnFkaG9teWsifQ.FyYRKsSJSe7xF1fKFlQW7w';
+                            const map = new mapboxgl.Map({
+                            container: 'map', // container ID
+                            style: 'mapbox://styles/mapbox/streets-v12', // style URL
+                            center: [-70.682147802278, -33.37538124548994], // starting position [lng, lat]
+                            zoom: 14, // starting zoom
+                            });
+                            // nuevos marcadores.
+                              //fijate en los numeros que van ar reves caleta de rato para cachar que no iban como se copian de google maps.
+
+                              const marker = new mapboxgl.Marker({
+                                  color: "red",
+                                  draggable: true
+                              }).setLngLat([-70.682147802278, -33.37538124548994  ]) // mi casa
+                                  .addTo(map);
+                    
+
+
+
+                              </script>
+                              <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.js"></script>
+                              <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.css" type="text/css">
+
+                            </div>
+                          
+                
+              
+                        <div class="modal-footer">
+                          
+                          <button type="button" class="btn btn-primary">Cerrar</button>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+{%endblock%}
+      

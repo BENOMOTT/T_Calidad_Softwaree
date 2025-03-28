@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles de la Orden</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary ">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03"
+                aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <img width="50px" src="/core/static/img/logo.webp" alt="">
+            <a class="navbar-brand text-dark bg-white" href="{% url 'bodegero'%}">Ferremax</a>
+            <div class="collapse navbar-collapse " id="navbarTogglerDemo03">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
+                    <li class="nav-item ">
+                        <a class="nav-link text-dark bg-white" >Bodeguero</a>
+                    </li>
+            </div>
+            </ul>                
+        </div>
+        <button type="button" class="btn btn-danger p-2 g-col-6" data-bs-toggle="modal" id="logoutButton">
+            <i class="bi bi-box-arrow-left"> Salir</i>
+          </button>
+    </nav>
+
+    <div class="container mt-5">
+        <h1>Detalles del Pedido</h1>
+        <div id="orden-detalle-container" class="mt-4"></div>
+        <a href="{% url 'bodegero'%}" class="btn btn-secondary mt-3">Volver a la lista de órdenes</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const ordenDetalleContainer = document.getElementById('orden-detalle-container');
+            const orderId = localStorage.getItem('orderId');
+
+            console.log("Order ID:", orderId); // Mostrar el orderId en la consola
+
+            if (orderId) {
+                // Realizar la solicitud AJAX para obtener la orden específica
+                fetch(`http://localhost:5000/api/orders/${orderId}`)
+                    .then(response => response.json())
+                    .then(order => {
+                        console.log("Pedido:", order); // Mostrar los datos del pedido en la consola
+
+                        const productosList = order.productos.map(producto => `
+                            <li>
+                                <strong>Nombre:</strong> ${producto.nombre} <br>
+                                <strong>Cantidad:</strong> ${producto.cantidad} <br>
+                                <strong>Precio:</strong> ${producto.precio.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })} <br>
+                                <strong>Total:</strong> ${producto.total.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' })}
+                            </li>
+                        `).join('');
+
+                        const estadoEnvio = order.estado_envio === 1 ? "Enviado" : "Pendiente"; // Ajusta los estados según tu lógica
+                        const tipoEstado = order.tipo_estado === 1 ? "Pagado" : "Pendiente"; // Ajusta los estados según tu lógica
+
+                        ordenDetalleContainer.innerHTML = `
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Orden ID: ${order.order_id}</h5>
+                                    <p class="card-text"><strong>Fecha de Compra:</strong> ${new Date(order.fecha_compra).toLocaleString()}</p>
+                                    <p class="card-text"><strong>Estado de Envío:</strong> ${estadoEnvio}</p>
+                                    <p class="card-text"><strong>Tipo de Estado:</strong> ${tipoEstado}</p>
+                                    <h6>Productos:</h6>
+                                    <ul>
+                                        ${productosList}
+                                    </ul>
+                                    <h6>Usuario:</h6>
+                                    <p class="card-text"><strong>Nombre:</strong> ${order.nombre}</p>
+                                    <p class="card-text"><strong>Correo:</strong> ${order.correo}</p>
+                                    <p class="card-text"><strong>Dirección:</strong> ${order.direccion}</p>
+                                    <p class="card-text"><strong>Comuna:</strong> ${order.comuna}</p>
+                                    <p class="card-text"><strong>Región:</strong> ${order.region}</p>
+                                </div>
+                            </div>
+                        `;
+                    })
+                    .catch(error => {
+                        console.error('Error al cargar la orden:', error);
+                        ordenDetalleContainer.innerHTML = '<p>Error al cargar la orden.</p>';
+                    });
+            } else {
+                ordenDetalleContainer.innerHTML = '<p>ID de orden no especificado.</p>';
+            }
+        });
+    </script>
+</body>
+</html>

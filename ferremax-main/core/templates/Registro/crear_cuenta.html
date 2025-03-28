@@ -1,0 +1,104 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Nuevo Usuario</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary ">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03"
+            aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <img width="50px" src="/core/static/img/logo.webp" alt="">
+        <a class="navbar-brand text-dark bg-white" href="{% url 'inicio_sesion'%}">Volver</a>
+        <div class="collapse navbar-collapse " id="navbarTogglerDemo03">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
+                <li class="nav-item ">
+                    <a class="nav-link text-dark bg-white" >Registro de usuarios</a>
+                </li>
+        </div>
+        </ul>                
+    </div>
+   
+</nav>
+<body>
+    <div class="container mt-5">
+        <h1>Crear Nuevo Usuario</h1>
+        <form id="createUserForm">
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="rut">RUT:</label>
+                <input type="text" id="rut" name="rut" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="correo">Correo:</label>
+                <input type="email" id="correo" name="correo" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="contraseña">Contraseña:</label>
+                <input type="password" id="contraseña" name="contraseña" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="direccion">Dirección:</label>
+                <input type="text" id="direccion" name="direccion" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="region">Región:</label>
+                <input type="text" id="region" name="region" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="comuna">Comuna:</label>
+                <input type="text" id="comuna" name="comuna" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Crear Usuario</button>
+        </form>
+        <div id="mensaje" class="mt-3"></div>
+    </div>
+
+    <script>
+        document.getElementById('createUserForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const nuevoUsuario = {
+                "ID": Date.now(),  // Genera un ID temporal
+                "NOMBRE": document.getElementById('nombre').value,
+                "RUT": document.getElementById('rut').value,
+                "CORREO": document.getElementById('correo').value,
+                "CONTRASEÑA": document.getElementById('contraseña').value,
+                "TIPO_PERFIL": 1,
+                "DIRECCIÓN": document.getElementById('direccion').value,
+                "REGIÓN": document.getElementById('region').value,
+                "COMUNA": document.getElementById('comuna').value
+            };
+
+            fetch('http://localhost:5000/api/profiles', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(nuevoUsuario)
+            })
+            .then(response => response.json())
+            .then(data => {
+                const mensajeDiv = document.getElementById('mensaje');
+                if (data.message) {
+                    mensajeDiv.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+                } else {
+                    mensajeDiv.innerHTML = `<div class="alert alert-danger">Error al crear el usuario.</div>`;
+                }
+                document.getElementById('createUserForm').reset();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const mensajeDiv = document.getElementById('mensaje');
+                mensajeDiv.innerHTML = `<div class="alert alert-danger">Error al crear el usuario.</div>`;
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Órdenes</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary ">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03"
+                aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <img width="50px" src="/core/static/img/logo.webp" alt="">
+            <a class="navbar-brand text-dark bg-white" href="{% url 'bodegero'%}">Ferremax</a>
+            <div class="collapse navbar-collapse " id="navbarTogglerDemo03">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
+                    <li class="nav-item ">
+                        <a class="nav-link text-dark bg-white" >Bodeguero</a>
+                    </li>
+            </div>
+            </ul>                
+        </div>
+        <button type="button" class="btn btn-danger p-2 g-col-6" data-bs-toggle="modal" id="logoutButton">
+            <i class="bi bi-box-arrow-left"> Salir</i>
+        </button>
+    </nav>
+       
+
+    <div class="container mt-5">        
+        <h1>Lista de Pedidos</h1>
+        <div class="mb-3">
+            <label for="filterStatus" class="form-label">Filtrar por estado:</label>
+            <select id="filterStatus" class="form-control">
+                <option value="2">Aprobada</option>
+                <option value="4">Completada</option>
+            </select>
+        </div>
+        <ul id="lista-ordenes" class="list-group mt-4"></ul>
+       
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const listaOrdenes = document.getElementById('lista-ordenes');
+            const logoutButton = document.getElementById('logoutButton');
+            const filterStatus = document.getElementById('filterStatus');
+
+            // Función para cargar órdenes
+            const cargarOrdenes = (status) => {
+                // Limpiar la lista de órdenes
+                listaOrdenes.innerHTML = '';
+
+                // Realizar la solicitud AJAX para obtener las órdenes
+                fetch('http://localhost:5000/api/orders')
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(order => {
+                            // Filtrar solo las órdenes con el estado seleccionado
+                            if (order.tipo_estado == status) {
+                                const orderItem = document.createElement('li');
+                                orderItem.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
+
+                                const orderSummary = `
+                                    <div>
+                                        <strong>Orden ID:</strong> ${order.order_id} <br>
+                                        <strong>Fecha de Compra:</strong> ${new Date(order.fecha_compra).toLocaleString()}
+                                    </div>
+                                `;
+
+                                const detailButton = document.createElement('button');
+                                detailButton.classList.add('btn', 'btn-primary', 'mr-2');
+                                detailButton.textContent = 'Ver detalles';
+                                detailButton.addEventListener('click', () => {
+                                    localStorage.setItem('orderId', order.order_id);
+                                    window.location.href = `detalleb/${order.order_id}`;
+                                });
+
+                                const approveButton = document.createElement('button');
+                                approveButton.classList.add('btn', 'btn-success', 'mr-2');
+                                approveButton.textContent = 'Completada';
+                                approveButton.addEventListener('click', () => {
+                                    updateOrderStatus(order.order_id, 4);
+                                });
+
+                                orderItem.innerHTML = orderSummary;
+                                orderItem.appendChild(detailButton);
+                                if (status == 2) {
+                                    orderItem.appendChild(approveButton);
+                                }
+
+                                listaOrdenes.appendChild(orderItem);
+                            }
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error al cargar las órdenes:', error);
+                    });
+            };
+
+            // Cargar órdenes con el estado inicial (2)
+            cargarOrdenes(2);
+
+            // Cambiar filtro y recargar órdenes cuando se seleccione un nuevo estado
+            filterStatus.addEventListener('change', (event) => {
+                const selectedStatus = event.target.value;
+                cargarOrdenes(selectedStatus);
+            });
+
+            logoutButton.addEventListener('click', () => {
+                window.location.href = '/inicio';
+            });
+
+            function updateOrderStatus(orderId, status) {
+                fetch(`http://localhost:5000/api/orders/${orderId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ tipo_estado: status })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert(`Orden ${status === 4 ? 'completada' : 'rechazada'} exitosamente`);
+                            location.reload(); // Recargar la página para actualizar la lista de órdenes
+                        } else {
+                            throw new Error('Error al actualizar la orden');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        });
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,72 @@
+{% extends 'core/base.html' %}
+{% block contenido %}
+{% load humanize %}
+{% load static %}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 mt-5">
+            <div class="card mb-5">
+                <div class="card-body">
+                    <h1 class="text-center">Calculadora de Moneda</h1>
+                    <p class="text-center">Precio actual del dólar:</p>
+                    <p class="text-center" id="clp-to-usd-value">Cargando...</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group mb-3">
+                            <label for="clp_amount">CLP a USD:</label>
+                            
+                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                            <script>
+                                $(document).ready(function () {
+                                    console.log("Intentando obtener el tipo de cambio...");
+                            
+                                    $.ajax({
+                                        url: '/clp_to_usd/',
+                                        type: 'GET',
+                                        success: function (response) {
+                                            console.log("Respuesta de la API:", response);
+                                            $("#clp-to-usd-value").text("CLP = " + response.clp_to_usd + " USD");
+                                        },
+                                        error: function (xhr, status, error) {
+                                            console.error('Error al obtener el tipo de cambio:', xhr.responseText);
+                                            $("#clp-to-usd-value").text("Error al obtener el tipo de cambio.");
+                                        }
+                                    });
+                                });
+                            </script>
+                            
+                            <input type="number" class="form-control" name="clp_amount" id="clp_amount">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Calcular</button>
+                    </form>
+                    <br>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group mb-3">
+                            <label for="usd_amount">USD a CLP:</label>
+                            <input type="number" class="form-control" name="usd_amount" id="usd_amount">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Calcular</button>
+                    </form>
+                    <br>
+                    {% if error %}
+                    <p class="text-center text-danger">{{ error }}</p>
+                    {% endif %}
+                    {% if result is not None %}
+                        {% if result == 0 %}
+                            <p class="text-center">No se encontró valor para calcular.</p>
+                        {% else %}
+                            {% if request.POST.clp_amount %}
+                                <p class="text-center">CLP = {{ result|intcomma }} USD</p>
+                            {% elif request.POST.usd_amount %}
+                                <p class="text-center">USD = {{ result|intcomma }} CLP</p>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

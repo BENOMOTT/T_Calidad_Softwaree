@@ -1,0 +1,77 @@
+{% extends 'core/base.html'%}
+{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
+{% block contenido %}
+{% if user.is_authenticated %}
+<div class="container card col-md-6 offset-md-3 "> 
+        
+    
+    <div class="d-flex">
+        <div class="p-2 flex-grow-1">Marca</div>
+        <div class="p-2">
+            <a class="btn btn-secondary btn-sm " href="{% url 'agregar-marca'%}">Agregar</a>
+        </div>
+        <div class="p-2">
+            <a class="btn btn-warning btn-sm " href="{% url 'listar-marca'%}">Lista</a>
+        </div>
+    </div>
+
+    <div class="d-flex">
+        <div class="p-2 flex-grow-1">Productos</div>
+        <div class="p-2">
+            <a class="btn btn-secondary btn-sm " href="{% url 'agregar-productos'%}">Agregar</a>
+        </div>
+        <div class="p-2">
+            <a class="btn btn-warning btn-sm " href="{% url 'listar-producto'%}">Lista</a>
+        </div>
+    </div>
+
+    <div class="d-flex">
+        <div class="p-2 flex-grow-1">Tutoriales</div>
+        <div class="p-2">
+            <a class="btn btn-secondary btn-sm " href="{% url 'agregar-tutorial'%}">Agregar</a>
+        </div>
+        <div class="p-2">
+            <a class="btn btn-warning btn-sm " href="{% url 'listar-tutorial'%}">Lista</a>
+        </div>
+    </div>
+
+    
+
+    <div class="d-flex">
+        <div class="p-2 flex-grow-1">Ciudad</div>
+        <div class="p-2">
+            <a class="btn btn-secondary btn-sm " href="{% url 'agregar-ciudad'%}">Agregar</a>
+        </div>
+        <div class="p-2">
+            <a class="btn btn-warning btn-sm " href="{% url 'listar-ciudad'%}">Lista</a>
+        </div>
+    </div>
+
+    <div class="d-flex">
+        <div class="p-2 flex-grow-1">Comuna</div>
+        <div class="p-2">
+            <a class="btn btn-secondary btn-sm " href="{% url 'agregar-comuna'%}">Agregar</a>
+        </div>
+        <div class="p-2">
+            <a class="btn btn-warning btn-sm " href="{% url 'listar-comuna'%}">Lista</a>
+        </div>
+    </div>
+
+    
+
+    <div class="d-flex">
+        <div class="p-2 flex-grow-1">Direccion</div>
+        <div class="p-2">
+            <a class="btn btn-secondary btn-sm " href="{% url 'agregar-direccion'%}">Agregar</a>
+        </div>
+        <div class="p-2">
+            <a class="btn btn-warning btn-sm " href="{% url 'listar-direccion'%}">Lista</a>
+        </div>
+    </div>
+</div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+{% endif %}
+
+
+{% endblock %}

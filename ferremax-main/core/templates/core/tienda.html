@@ -1,0 +1,53 @@
+{% extends 'core/base.html'%}
+{%block contenido%}
+{% load humanize %}
+{% load static %}
+
+
+
+
+<body>
+
+
+    <div class="container mt-5">
+        
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <!-- Filtro por categoría -->
+                <select id="filtroCategoria" class="form-select">
+                    <option value="">Todas las categorías</option>
+                    <option value="Herramientas manuales">Herramientas manuales</option>
+                    <option value="Materiales Básicos">Materiales Básicos</option>
+                    <option value="Equipos de Seguridad">Equipos de Seguridad</option>
+                    <option value="Tornillos y Anclajes">Tornillos y Anclajes</option>
+                    <option value="Fijaciones y Adhesivos">Fijaciones y Adhesivos</option>
+                    <option value="Equipos y Medición">Equipos y Medicion</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <!-- Búsqueda por nombre -->
+                <input id="busquedaNombre" type="text" class="form-control" placeholder="Buscar por nombre...">
+            </div>
+        </div>
+
+        <div class="row" id="productos-container">
+            <!-- Aquí se agregarán dinámicamente los productos -->
+        </div>
+
+        <!--START PAGINADOR -->
+        <nav aria-label="Page navigation example">
+            <ul id="pagination" class="pagination justify-content-center"></ul>
+        </nav>
+        <!-- END PAGINADOR -->
+
+    </div>
+
+
+
+
+
+</body>
+
+
+
+{%endblock%}
