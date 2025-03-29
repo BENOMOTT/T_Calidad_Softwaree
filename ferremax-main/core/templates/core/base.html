@@ -80,32 +80,41 @@
           </div>
           
 
-          <!-- Modal -->
-          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="exampleModalLabel">Carrito de compras</h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <div id="carrito-container">
-                    <ul id="lista-productos"></ul>
-                    <li>
-                      <hr class="dropdown-divider">
-                    </li>
-                    <p id="totalCarrito">Total del Carrito: $0 CLP</p>
-                    <button id="vaciar-carrito" class="btn btn-danger">Vaciar Carrito</button>
-                    <button id="comprar" class="btn btn-primary btn-md">Comprar</button>
-                  </div>
-                </div>
-                <div class="modal-footer" id="carrito-container">
-                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                </div>
-              </div>
-            </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content" style="background: linear-gradient(90deg, #2E1A47, #9C27B0);">
+          <div class="modal-header">
+              <h1 class="modal-title fs-5 text-light" id="exampleModalLabel">Carrito de compras</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
+          <div class="modal-body">
+              <div id="carrito-container">
+                  <!-- Lista de productos -->
+                  <ul id="lista-productos" class="list-group mb-4">
+                  </ul>
+
+                  <hr class="dropdown-divider">
+
+                  <!-- Total del carrito -->
+                  <p id="totalCarrito" class="h4 text-end text-light">Total del Carrito: $0 CLP</p>
+
+                  <!-- Botones de vaciar y comprar -->
+                  <div class="d-flex justify-content-between mt-3">
+                      <button id="vaciar-carrito" class="btn btn-danger btn-sm">Vaciar Carrito</button>
+                      <button id="comprar" class="btn btn-primary btn-sm">Comprar</button>
+                  </div>
+              </div>
+          </div>
+          <div class="modal-footer" style="background: linear-gradient(90deg, #2E1A47, #9C27B0);">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
 
 
 
@@ -279,24 +288,33 @@
           li.textContent = `${producto.Nombre} - Cantidad: ${producto.cantidad} - Precio Total: ${precioFormateado}`;
 
           const btnAumentar = document.createElement('button');
-          btnAumentar.textContent = '+';
-          btnAumentar.addEventListener('click', () => {
-            carrito.aumentarCantidad(producto.Nombre);
-            mostrarProductosEnCarrito();
-            mostrarTotalCarrito();
-          });
-          li.appendChild(btnAumentar);
+                btnAumentar.textContent = '+';
+                btnAumentar.classList.add('btn', 'btn-outline-light', 'btn-sm', 'mx-2');
+                btnAumentar.style.borderRadius = '50%';
+                btnAumentar.style.width = '30px';
+                btnAumentar.style.height = '30px';
+                btnAumentar.addEventListener('click', () => {
+                    carrito.aumentarCantidad(producto.Nombre);
+                    mostrarProductosEnCarrito();
+                    mostrarTotalCarrito();
+                });
+                li.appendChild(btnAumentar);
 
-          const btnDisminuir = document.createElement('button');
-          btnDisminuir.textContent = '-';
-          btnDisminuir.addEventListener('click', () => {
-            carrito.disminuirCantidad(producto.Nombre);
-            mostrarProductosEnCarrito();
-            mostrarTotalCarrito();
-          });
-          li.appendChild(btnDisminuir);
+                const btnDisminuir = document.createElement('button');
+                btnDisminuir.textContent = '-';
+                btnDisminuir.classList.add('btn', 'btn-outline-light', 'btn-sm', 'mx-2');
+                btnDisminuir.style.borderRadius = '50%';
+                btnDisminuir.style.width = '30px';
+                btnDisminuir.style.height = '30px';
+                btnDisminuir.addEventListener('click', () => {
+                    carrito.disminuirCantidad(producto.Nombre);
+                    mostrarProductosEnCarrito();
+                    mostrarTotalCarrito();
+                });
+                li.appendChild(btnDisminuir);
 
-          listaProductos.appendChild(li);
+                listaProductos.appendChild(li);
+
         });
 
         // Mostrar el total del carrito
