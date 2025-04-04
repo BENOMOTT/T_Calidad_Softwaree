@@ -35,7 +35,7 @@
                 .then(response => response.json())
                 .then(data => {
                     // Filtrar productos de la marca Makita
-                    const filteredProducts = data.filter(producto => producto.Marca.trim().toLowerCase() === 'makita').slice(0, 4); // Tomar solo los primeros 4 productos
+                    const filteredProducts = data.filter(producto => producto.Marca.trim().toLowerCase() === 'sony').slice(0, 4); // Tomar solo los primeros 4 productos
 
                     // Limpiar el contenedor de productos antes de agregar nuevos
                     productosContainer.innerHTML = '';
@@ -116,9 +116,9 @@
                                 <img src="${producto.Imagen}" class="card-img-top" alt="${producto.Nombre}">
                                 <div class="card-body">
                                     <h5 class="card-title">${producto.Nombre}</h5>
-                                    <p class="card-text"><strong>Código del producto:</strong> ${producto['Código del producto']}</p>
-                                    <p class="card-text"><strong>Categoría:</strong> ${producto.Categoria}</p>
-                                    <p class="card-text"><strong>Marca:</strong> ${producto.Marca}</p>
+                                    <p class="card-text"><strong>Plataforma:</strong> ${producto['Código del producto']}</p>
+                                    <p class="card-text"><strong>Genero:</strong> ${producto.Categoria}</p>
+                                    <p class="card-text"><strong>Desarrolladora:</strong> ${producto.Marca}</p>
                                     <p class="card-text precio-originalN"><strong>Precio:</strong> ${precioOriginalChileno}</p>
                                     <a href="#" class="btn btn-success stretched-link" data-id="${producto.id}">Agregar al carrito</a>
                                 </div>

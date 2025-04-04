@@ -1,5 +1,5 @@
 """
-WSGI config for ferremax project.
+WSGI config for GAMEMAX project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

@@ -1,5 +1,5 @@
 """
-ASGI config for ferremax project.
+ASGI config for GAMEMAX project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
